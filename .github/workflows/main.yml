@@ -12,8 +12,8 @@ jobs:
         env:
           BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
         run: |
-          PRIMARY_USER="Puru-096"
-          BACKUP_USER="Puru-096"
+          PRIMARY_USER="pspaymentgateway"
+          BACKUP_USER="PaysecureMicroServices"
 
           REPOS=("PaySecureSDK_Python")   # start with 1 repo for testing
 
