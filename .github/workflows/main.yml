@@ -1,0 +1,35 @@
+name: Backup Selected Repositories
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync Selected Repositories
+        env:
+          BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
+        run: |
+          PRIMARY_USER="Puru-096"
+          BACKUP_USER="Puru-096"
+
+          REPOS=("PaySecureSDK_Python")   # start with 1 repo for testing
+
+          for repo in "${REPOS[@]}"; do
+            echo "Processing $repo"
+
+            rm -rf $repo
+            git clone https://github.com/$PRIMARY_USER/$repo.git
+            cd $repo
+
+            git remote add backup https://$BACKUP_TOKEN@github.com/$BACKUP_USER/$repo.git
+
+            git fetch --all
+            git push backup --all
+            git push backup --prune
+            git push backup --tags
+
+            cd ..
+          done
