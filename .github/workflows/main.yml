@@ -27,7 +27,11 @@ jobs:
             # Add backup remote
             git remote add backup https://$BACKUP_TOKEN@github.com/$BACKUP_USER/$repo.git
   
-            # Mirror push (exact sync)
-            git push backup --mirror
+            # Push only branches
+            git push backup 'refs/heads/*:refs/heads/*' --prune
+        
+            # Push only tags
+            git push backup 'refs/tags/*:refs/tags/*'
+
             echo "Sync completed"
           done
