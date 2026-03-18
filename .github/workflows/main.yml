@@ -20,17 +20,12 @@ jobs:
           for repo in "${REPOS[@]}"; do
             echo "Processing $repo"
 
-            rm -rf $repo
-            echo "https://github.com/$PRIMARY_USER/$repo.git"
-            git clone https://github.com/$PRIMARY_USER/$repo.git
-            cd $repo
+           # Mirror clone (includes ALL branches, tags, refs)
+          git clone --mirror https://github.com/$PRIMARY_USER/$repo.git
+          cd $repo.git
 
-            git remote add backup https://$BACKUP_TOKEN@github.com/$BACKUP_USER/$repo.git
+          # Add backup remote
+          git remote add backup https://$BACKUP_TOKEN@github.com/$BACKUP_USER/$repo.git
 
-            git fetch --all
-            git push backup --all
-            git push backup --prune
-            git push backup --tags
-
-            cd ..
-          done
+          # Mirror push (exact sync)
+          git push backup --mirror
