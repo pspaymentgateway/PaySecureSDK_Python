@@ -10,6 +10,7 @@ on:
 
 jobs:
   backup:
+    if: github.repository_owner == 'pspaymentgateway'
     runs-on: ubuntu-latest
 
     steps:
