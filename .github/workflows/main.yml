@@ -22,21 +22,24 @@ jobs:
           BACKUP_USER="PaysecureMicroServices"
 
           #REPOS=("PaySecureSDK_Python")   # start with 1 repo for testing
-          repo="${{ github.event.repository.name }}"
-          echo "Processing $repo"
+          REPOS=("PaySecureSDK_Python" "download_service")
 
-          # Mirror clone (includes ALL branches, tags, refs)
-          git clone --mirror https://github.com/$PRIMARY_USER/$repo.git
-          cd $repo.git
+          for repo in "${REPOS[@]}"; do
+            #repo="${{ github.event.repository.name }}"
+            echo "Processing $repo"
   
-          # Add backup remote
-          git remote add backup https://$BACKUP_TOKEN@github.com/$BACKUP_USER/$repo.git
+            # Mirror clone (includes ALL branches, tags, refs)
+            git clone --mirror https://github.com/$PRIMARY_USER/$repo.git
+            cd $repo.git
+    
+            # Add backup remote
+            git remote add backup https://$BACKUP_TOKEN@github.com/$BACKUP_USER/$repo.git
+    
+            # Push only branches
+            git push backup 'refs/heads/*:refs/heads/*' --prune
+          
+            # Push only tags
+            git push backup 'refs/tags/*:refs/tags/*'
   
-          # Push only branches
-          git push backup 'refs/heads/*:refs/heads/*' --prune
-        
-          # Push only tags
-          git push backup 'refs/tags/*:refs/tags/*'
-
-          echo "Sync completed"
+            echo "Sync completed"
           
