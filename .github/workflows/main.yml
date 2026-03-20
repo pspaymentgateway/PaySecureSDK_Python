@@ -43,3 +43,8 @@ jobs:
   
             echo "Sync completed"
           
+            # Push only tags
+            git push backup 'refs/tags/*:refs/tags/*'
+  
+            echo "Sync completed"
+          done
