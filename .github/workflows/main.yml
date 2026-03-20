@@ -42,4 +42,4 @@ jobs:
             git push backup 'refs/tags/*:refs/tags/*'
   
             echo "Sync completed"
-          
+          done
