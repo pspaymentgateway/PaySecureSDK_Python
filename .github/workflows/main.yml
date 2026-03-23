@@ -14,6 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+     # DEBUG STEP (ADD HERE)
+      - name: Debug Event
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Branch: ${{ github.ref_name }}"
+          
       - name: Sync Selected Repositories
         env:
           BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
